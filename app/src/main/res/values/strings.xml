@@ -14,5 +14,6 @@
     <string name="re_type_password">Re-type Password</string>
     <string name="your_name">Full Name</string>
     <string name="new_user">New user?</string>
-    <string name="login_back">Back to login</string>
+    <string name="login_back">Back to login</string> />
+    <string name="remember">Remember me</string>
 </resources>

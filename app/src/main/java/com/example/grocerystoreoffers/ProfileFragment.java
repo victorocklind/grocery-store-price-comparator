@@ -3,11 +3,18 @@ package com.example.grocerystoreoffers;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,29 +31,13 @@ public class ProfileFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    EditText email,password;
 
     public ProfileFragment() {
-        // TODO: Add support for input (Username/Password) and fix fragment switch for the buttons
         // Required empty public constructor
     }
-    /*
-    EditText username = (EditText) getView().findViewById(R.id.et_email);
-    EditText password = (EditText) getView().findViewById(R.id.et_password);
 
-    public void login(View view) {
-        if (username.getText().toString().equals("admin") && password.getText().toString().equals("admin")) {
-
-            System.out.println("Correct login\n");
-            System.out.println(username);
-            System.out.println(password);
-
-        } else {
-            System.out.println("Wrong input");
-        }
-    }
-
-    */
+    EditText username;
+    EditText password;
 
         /**
          * Use this factory method to create a new instance of
@@ -73,7 +64,7 @@ public class ProfileFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+    }
         /*
         if (username.getText().toString().equals("admin") && password.getText().toString().equals("admin")) {
 
@@ -86,15 +77,60 @@ public class ProfileFragment extends Fragment {
         }
         */
 
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //TODO: Check if user is logged in, then get to profile page, else goto login/register page
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        Button login_btn = view.findViewById(R.id.btn_login);
+        Button register_btn = view.findViewById(R.id.btn_register);
+
+        username = view.findViewById(R.id.et_email);
+        password = view.findViewById(R.id.et_password);
+
+        // Login
+        login_btn.setOnClickListener(view1 -> {
+            //TODO: Check whether email is unused, if unused, prompt to register
+            System.out.println("Email: " + username.getText().toString() + "\n");
+            System.out.println("Password: " + password.getText().toString() + "\n");
+        });
+
+        register_btn.setOnClickListener(view1 -> {
+            System.out.println("Register button clicked from profFrag");
+            replaceFragment(new RegisterFragment());
+        });
+
+        CheckBox checkBox = (CheckBox) view.findViewById(R.id.remember);
+        //checkBox.setChecked(checkPasswordExist()); Kolla JSON token
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (checkBox.isChecked()) {
+                    printToast("Checked");
+                }
+                else {
+                    printToast("Unchecked");
+                }
+            }
+        });
+
+        return view;
     }
 
+    private void replaceFragment(Fragment fragment){
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout,fragment);
+        fragmentTransaction.commit();
+    }
+    private void printToast(String message){
+        Toast toast = Toast.makeText(getActivity(),message,Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+        toast.show();
+    }
 
 }
