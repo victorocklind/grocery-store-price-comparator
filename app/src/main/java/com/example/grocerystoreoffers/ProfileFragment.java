@@ -109,6 +109,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (checkBox.isChecked()) {
+                    //TODO: Get JSON-token with extended time
                     printToast("Checked");
                 }
                 else {
